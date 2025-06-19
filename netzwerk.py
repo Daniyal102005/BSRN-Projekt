@@ -1,3 +1,4 @@
+from multiprocessing import Queue
 import socket
 import queue
 import sys

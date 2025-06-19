@@ -3,8 +3,8 @@ import sys
 import signal
 from multiprocessing import Process, Queue
 
-from efe_chat_ui import ChatClientUI
-from network import network_loop, send_leave_broadcast
+from chat_ui import ChatClientUI
+from netzwerk import network_loop, send_leave_broadcast
 from discovery import discovery_loop
 
 
