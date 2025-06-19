@@ -1,10 +1,10 @@
+#!/usr/bin/env python3
 """
 main.py
 
 Startet die Chat-Client-Anwendung mit:
 1) einer Benutzeroberfläche (UI)
-2) einem Netzwerk-Prozess, der beim Start einen JOIN-Broadcast schickt
-   und beim Ende einen LEAVE-Broadcast.
+2) einem Discovery-Prozess für lokale Peer-Erkennung
 """
 
 import toml
@@ -13,51 +13,60 @@ import signal
 from multiprocessing import Process, Queue
 
 from efe_chat_ui import ChatClientUI
-from import_socket import send_join_broadcast, send_leave_broadcast
-
-def send_join(port: int, handle: str):
-    """Schickt einen JOIN-Broadcast an alle Geräte im Netzwerk."""
-    try:
-        print(f"Sende JOIN-Broadcast: Handle={handle}, Port={port}")
-        send_join_broadcast(handle, port)
-    except Exception as e:
-        print(f"[Fehler beim JOIN-Broadcast] {e}")
-
-def cleanup_and_exit(handle: str, port: int, processes: list):
-    """
-    Sendet einen LEAVE-Broadcast
-    undbeendet das Hauptprogramm.
-    """
-    try:
-        print(f"Sende LEAVE-Broadcast: Handle={handle}")
-        send_leave_broadcast(handle, port)
-    except Exception as e:
-        print(f"[Fehler beim LEAVE-Broadcast] {e}")
-    finally:
-        for proc in processes:
-            print(f"Beende Prozess {proc.name} …")
-            proc.terminate()
-        sys.exit(0)
+from netzwerk import send_join_broadcast, send_leave_broadcast
+from discovery import discovery_loop
 
 def main():
-    config = toml.load("config.toml")
+    # 1. Zentrale Konfiguration laden
+    config    = toml.load("config.toml")
+    handle    = config.get("handle",    "User")
+    port      = config.get("port",      5000)
+    whoisport = config.get("whoisport", 4000)
+
+    # 2. UI-Instanz erzeugen
     ui = ChatClientUI(config_path="config.toml")
 
+    # 3. IPC-Queues (für zukünftige Erweiterungen)
     ui_to_net = Queue()
     net_to_ui = Queue()
 
+    # 4. JOIN-Broadcast senden (Discovery wird informiert)
+    send_join_broadcast(handle, port, whoisport)
+
+    # 5. Sub-Prozesse anlegen
     processes = [
-        Process(target=ui.run, args=(ui_to_net, net_to_ui), name="UI-Prozess"),
-        Process(target=send_join, args=(config["port"], config["handle"]), name="JOIN-Prozess")
+        Process(
+            target=ui.run,
+            args=(ui_to_net, net_to_ui),
+            name="UI-Prozess"
+        ),
+        Process(
+            target=discovery_loop,
+            args=(whoisport, ui_to_net),
+            name="Discovery-Prozess"
+        )
     ]
 
-    # Prozesse starten
+    # 6. Signal-Handler für sauberes Beenden
+    def on_exit(signum, frame):
+        # LEAVE-Broadcast senden
+        send_leave_broadcast(handle, whoisport)
+        # Alle Sub-Prozesse terminieren
+        for p in processes:
+            p.terminate()
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT,  on_exit)
+    signal.signal(signal.SIGTERM, on_exit)
+
+    # 7. Prozesse starten
     for proc in processes:
+        print(f"Starte {proc.name} …")
         proc.start()
 
-    # Auf Ende warten
+    # 8. Auf Ende warten
     for proc in processes:
         proc.join()
-        
+
 if __name__ == "__main__":
     main()
