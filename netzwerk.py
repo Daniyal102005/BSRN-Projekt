@@ -88,7 +88,7 @@ def send_msg(handle: str, text: str, peer_ip: str, peer_port: int) -> None:
     finally:
         tcp_socket.close()
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     cfg = load_config('config.toml')
     if not cfg:
         sys.exit(1)
