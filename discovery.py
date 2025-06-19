@@ -1,6 +1,4 @@
-# Discovery-Dienst für SLCP-Projekt (mit erklärenden Kommentaren und Lockfile)
-
-import socket  # Modul für Netzwerkkommunikation
+import socket 
 import os
 import sys
 from multiprocessing import Queue
