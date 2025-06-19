@@ -1,28 +1,13 @@
-"""
-Dieses Modul stellt alle Netzwerk-Funktionen für JOIN, LEAVE, WHO und MSG bereit.
-Es liest einmalig die zentrale config.toml und verschickt Broadcasts an den
-Discovery-Port sowie direkte TCP-Nachrichten an Peers.
-"""
-
+from multiprocessing import Queue
 import socket
-import toml
+import queue
 import sys
 
-def load_config(config_path: str = 'config.toml') -> dict:
-    """
-    Lädt die Konfiguration aus der angegebenen TOML-Datei.
-    Erwartete Keys: handle (str), port (int), whoisport (int)
-    """
-    try:
-        with open(config_path, 'r') as f:
-            return toml.load(f)
-    except Exception as e:
-        print(f"Fehler beim Laden der Config '{config_path}': {e}")
-        return {}
+# Broadcast-Funktionen
 
 def send_join_broadcast(handle: str, chat_port: int, whoisport: int) -> None:
     """
-    Broadcastet 'JOIN <handle> <chat_port>' an alle Teilnehmer via UDP.
+    Broadcastet 'JOIN <handle> <chat_port>' an Discovery-Port.
     """
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
@@ -35,9 +20,10 @@ def send_join_broadcast(handle: str, chat_port: int, whoisport: int) -> None:
     finally:
         sock.close()
 
+
 def send_leave_broadcast(handle: str, whoisport: int) -> None:
     """
-    Broadcastet 'LEAVE <handle>' an alle Teilnehmer via UDP.
+    Broadcastet 'LEAVE <handle>' an Discovery-Port.
     """
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
@@ -50,10 +36,11 @@ def send_leave_broadcast(handle: str, whoisport: int) -> None:
     finally:
         sock.close()
 
+
 def send_who_broadcast(whoisport: int, timeout: float = 2.0) -> None:
     """
     Broadcastet 'WHO' an Discovery-Port und wartet auf eine Antwort.
-    Gibt die Antwort oder einen Timeout-Hinweis aus.
+    Antwort wird auf stdout geschrieben.
     """
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
@@ -73,6 +60,7 @@ def send_who_broadcast(whoisport: int, timeout: float = 2.0) -> None:
     finally:
         sock.close()
 
+
 def send_msg(handle: str, text: str, peer_ip: str, peer_port: int) -> None:
     """
     Sendet 'MSG <handle> <text>' per TCP an einen einzelnen Peer.
@@ -88,15 +76,51 @@ def send_msg(handle: str, text: str, peer_ip: str, peer_port: int) -> None:
     finally:
         tcp_socket.close()
 
+<<<<<<< HEAD
 if __name__ == "__main__":
     cfg = load_config('config.toml')
     if not cfg:
         sys.exit(1)
+=======
+>>>>>>> 13a392ac388063b250db590924fada88e4eccfd5
 
-    handle    = cfg.get('handle', 'User')
-    port      = cfg.get('port', 5000)
-    whoisport = cfg.get('whoisport', 4000)
+def network_loop(ui_to_net: "Queue[str]", net_to_ui: "Queue[str]", handle: str, chat_port: int, whoisport: int):
+    """
+    Haupt-Loop für Chat und Discovery:
+    - JOIN beim Start
+    - Nachrichten aus ui_to_net als "MSG ..." broadcasten
+    - WHO-Anfragen aus ui_to_net broadcasten
+    - eingehende UDP-Pakete empfangen und an net_to_ui weitergeben
+    """
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+    sock.bind(("", chat_port))
 
-    send_join_broadcast(handle, port, whoisport)
-    send_who_broadcast(whoisport)
-    send_leave_broadcast(handle, whoisport)
+    # Initialer JOIN
+    send_join_broadcast(handle, chat_port, whoisport)
+
+    while True:
+        # 1) Sende UI-Nachrichten
+        try:
+            msg = ui_to_net.get_nowait()
+            if msg == "WHO":
+                send_who_broadcast(whoisport)
+            else:
+                packet = f"MSG {handle} {msg}\n".encode('utf-8')
+                sock.sendto(packet, ('255.255.255.255', chat_port))
+        except queue.Empty:
+            pass
+
+        # 2) Empfange eingehende Pakete
+        try:
+            data, addr = sock.recvfrom(4096)
+            text = data.decode('utf-8', errors='ignore').strip()
+            if text.startswith("MSG"):
+                _, sender, body = text.split(maxsplit=2)
+                net_to_ui.put(f"{sender}: {body}")
+            elif text.startswith("KNOWNUSERS"):
+                entries = text.split(' ', 1)[1]
+                net_to_ui.put(f"[WHO-REPLY] {entries}")
+        except Exception:
+            pass
