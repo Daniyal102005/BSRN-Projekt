@@ -1,12 +1,3 @@
-#!/usr/bin/env python3
-"""
-main.py
-
-Startet die Chat-Client-Anwendung mit:
-1) einer Benutzeroberfläche (UI)
-2) einem Discovery-Prozess für lokale Peer-Erkennung
-"""
-
 import toml
 import sys
 import signal
