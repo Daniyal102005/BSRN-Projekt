@@ -1,3 +1,11 @@
+"""
+@file chat_ui.py
+@brief Kommandozeilen-Oberfläche und Logik für den Chat-Client.
+
+Dieses Modul verwaltet die Benutzereingaben, Konfigurationen,
+Nachrichtenaustausch und Discovery-Kommunikation via Queue.
+"""
+
 import toml
 import os
 import sys
@@ -5,7 +13,13 @@ import queue
 from multiprocessing import Queue
 from netzwerk import send_msg
 
+## \class ChatClientUI
+#  \brief Diese Klasse stellt die textbasierte Benutzeroberfläche und Netzwerklogik bereit.
+#  Sie verarbeitet Eingaben, lädt und speichert Konfigurationen,
+#  und kommuniziert mit dem Netzwerkprozess über Queues.
 class ChatClientUI:
+    ## \brief Initialisiert das UI und lädt Konfiguration.
+    #  \param config_path Pfad zur TOML-Konfigurationsdatei.
     def __init__(self, config_path="config.toml"):
         self.CONFIG_FILE = config_path
         self.DEFAULT_CONFIG = {
@@ -33,10 +47,17 @@ class ChatClientUI:
 
         self.peers = {}  # Peer-Liste: handle -> (ip, port)
 
+    def load_config(self):
+        if not os.path.exists(self.CONFIG_FILE):
+            self.save_config(self.DEFAULT_CONFIG)
+        with open(self.CONFIG_FILE, "r") as f:
+            return toml.load(f)
+
     def save_config(self, config):
         with open(self.CONFIG_FILE, "w") as f:
             toml.dump(config, f)
 
+    ## \brief Ändert die Konfiguration über Benutzereingabe (außer whoisport).
     def change_config(self):
         print("\n--- Konfiguration ändern ---")
         for key in ("port", "autoreply", "imagepath"):
@@ -47,6 +68,9 @@ class ChatClientUI:
         self.save_config(self.config)
         print("Konfiguration gespeichert.\n")
 
+    ## \brief Startet das textbasierte UI: verarbeitet alle Eingaben und zeigt Netzwerknachrichten an.
+    #  \param ui_to_net Queue zum Senden von Nachrichten.
+    #  \param net_to_ui Queue zum Empfangen von Netzwerkereignissen.
     def run(self, ui_to_net: Queue, net_to_ui: Queue):
         """
         Startet die Chat-Schleife:
@@ -62,15 +86,25 @@ class ChatClientUI:
         print("Gib '/help' für Befehle ein. Nachrichten ohne '/' werden broadcastet.")
 
         while True:
-            # Eingehende Nachrichten und Events anzeigen
+            # Anzeigen aller eingehenden Nachrichten und Events
             try:
                 while True:
                     msg = net_to_ui.get_nowait()
-                    print(msg)
+                    # Discovery-Event: Fülle Peer-Liste bei WHO-Reply
+                    if msg.startswith("[WHO-REPLY]"):
+                        # Format: [WHO-REPLY] Alice 192.168.1.5 5000;Bob 192.168.1.6 5001
+                        entries = msg.split(' ',1)[1].split(';')
+                        self.peers.clear()
+                        for entry in entries:
+                            h, ip, p = entry.split()
+                            self.peers[h] = (ip, int(p))
+                        print("Peers im Netzwerk:", ", ".join(self.peers.keys()))
+                    else:
+                        print(msg)
             except queue.Empty:
                 pass
 
-            # Benutzereingabe
+            # Eingabe
             text = input("> ").strip()
             if not text:
                 continue
@@ -83,7 +117,8 @@ class ChatClientUI:
                     print("Befehle:\n /who     - Teilnehmerliste abfragen\n /msg <Handle> <Nachricht> - Direktnachricht senden\n /config  - Konfiguration ändern\n /quit    - Chat beenden")
 
                 elif cmd == "/who":
-                    ui_to_net.put("WHO")
+                    # Discovery Anfrage
+                    send_who_broadcast(whoisport)
 
                 elif cmd == "/msg":
                     if len(parts) < 3:
@@ -106,11 +141,11 @@ class ChatClientUI:
 
                 else:
                     print(f"Unbekannter Befehl: {cmd}. '/help' für Übersicht.")
-
             else:
-                # Broadcast-Nachricht
+                # Broadcast-Nachricht an alle
                 ui_to_net.put(text)
 
+## \brief Startpunkt bei direktem Ausführen des Skripts
 if __name__ == "__main__":
     ui = ChatClientUI()
     ui.run(Queue(), Queue())

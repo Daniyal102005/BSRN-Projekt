@@ -76,13 +76,11 @@ def send_msg(handle: str, text: str, peer_ip: str, peer_port: int) -> None:
     finally:
         tcp_socket.close()
 
-<<<<<<< HEAD
 if __name__ == "__main__":
     cfg = load_config('config.toml')
     if not cfg:
         sys.exit(1)
-=======
->>>>>>> 13a392ac388063b250db590924fada88e4eccfd5
+
 
 def network_loop(ui_to_net: "Queue[str]", net_to_ui: "Queue[str]", handle: str, chat_port: int, whoisport: int):
     """

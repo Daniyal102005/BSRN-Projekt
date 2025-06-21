@@ -1,10 +1,25 @@
+"""!
+@file chat_gui.py
+@brief Benutzeroberfläche (GUI) für den Chat-Client.
+
+Dieses Modul implementiert die grafische Benutzeroberfläche zur Konfiguration,
+Anzeige von Nachrichten, Auswahl von Bildern und Auswahl von Nutzern.
+Es verwendet die Tkinter-Bibliothek und bindet die Konfigurationslogik aus ChatClientUI ein.
+"""
 import tkinter as tk
 from tkinter import messagebox, scrolledtext, filedialog
 import toml
 import os
 from chat_ui import ChatClientUI
 
+
+
+## \class ChatUIVisualizer
+#  \brief Diese Klasse erstellt das grafische Chatfenster (GUI) für den Benutzer.
+#  Sie bindet eine Konfigurationsansicht, den Chatverlauf, die Nutzerauswahl und das Senden von Nachrichten ein.
 class ChatUIVisualizer:
+    ## Konstruktor der GUI
+    #  \param master Hauptfenster der Anwendung (Tkinter Root Window)
     def __init__(self, master):
         self.master = master
         self.chat_ui = ChatClientUI()
@@ -14,6 +29,7 @@ class ChatUIVisualizer:
 
         self.setup_ui()
 
+    ## Erstellt alle UI-Elemente
     def setup_ui(self):
         main_frame = tk.Frame(self.master)
         main_frame.pack(fill="both", expand=True, padx=10, pady=10)
@@ -76,6 +92,7 @@ class ChatUIVisualizer:
         for user in users:
             self.user_listbox.insert(tk.END, user)
 
+    ## Öffnet einen Dateidialog zur Bildauswahl
     def choose_image(self):
         filepath = filedialog.askopenfilename(title="Bild auswählen", filetypes=[("Bilder", "*.jpg *.jpeg *.png *.gif")])
         if filepath:
@@ -83,6 +100,7 @@ class ChatUIVisualizer:
             self.add_system_message(f"Bild ausgewählt: {filename}")
             # Übergabe an Team für echten Versand möglich
 
+    ## Speichert die aktuelle Konfiguration
     def save_config(self):
         for key, entry in self.entries.items():
             if key == "whoisport":
@@ -95,12 +113,14 @@ class ChatUIVisualizer:
         self.chat_ui.save_config(self.chat_ui.config)
         self.add_system_message("Konfiguration gespeichert.")
 
+    ## Zeigt die Konfiguration im Chatfenster an
     def show_config(self):
         text = "\n--- Aktuelle Konfiguration ---\n"
         for key, value in self.chat_ui.config.items():
             text += f"{key}: {value}\n"
         self.add_system_message(text)
 
+    ## Sendet eine Nachricht aus dem Eingabefeld
     def send_message(self):
         message = self.message_entry.get().strip()
         if message:
@@ -110,19 +130,24 @@ class ChatUIVisualizer:
             self.chat_display.see(tk.END)
             self.message_entry.delete(0, tk.END)
 
+    ## Zeigt eine Systemnachricht im Chatfenster an
     def add_system_message(self, message):
         self.chat_display.config(state="normal")
         self.chat_display.insert(tk.END, f"[System] {message}\n")
         self.chat_display.config(state="disabled")
         self.chat_display.see(tk.END)
 
+    ## Wird aufgerufen, wenn ein Nutzer aus der Liste ausgewählt wird
     def user_selected(self, event):
         selection = event.widget.curselection()
         if selection:
             selected_user = event.widget.get(selection[0])
             self.add_system_message(f"Chat mit {selected_user} geöffnet.")
 
+## Startet die GUI
 if __name__ == "__main__":
+    import tkinter as tk
     root = tk.Tk()
     app = ChatUIVisualizer(root)
     root.mainloop()
+

@@ -4,11 +4,7 @@ import signal
 from multiprocessing import Process, Queue
 
 from chat_ui import ChatClientUI
-<<<<<<< HEAD
 from netzwerk import send_join_broadcast, send_leave_broadcast
-=======
-from netzwerk import network_loop, send_leave_broadcast
->>>>>>> 13a392ac388063b250db590924fada88e4eccfd5
 from discovery import discovery_loop
 
 
