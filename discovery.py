@@ -6,8 +6,6 @@ from multiprocessing import Queue
 def discovery_loop(whoisport: int, ui_to_net: Queue):
 
     teilnehmer = {}  # Dictionary für Teilnehmer: handle -> (IP-Adresse, Port)
-    PORT = 4000  # Port für den Discovery-Dienst laut SLCP-Spezifikation
-    MaxBytes = 1024  # Maximale Größe für empfangene Nachrichten
     LOCKFILE = "discovery.lock"  # Lockfile zum Schutz vor Mehrfachstart
 
     # Überprüfen, ob der Dienst bereits läuft
@@ -22,16 +20,16 @@ def discovery_loop(whoisport: int, ui_to_net: Queue):
     # UDP-Socket erstellen
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)  # Broadcast erlauben
-    sock.bind(('', PORT))  # Socket auf allen Schnittstellen öffnen ('' = 0.0.0.0)
+    sock.bind(('', 4000))  # Socket auf allen Schnittstellen öffnen ('' = 0.0.0.0)
 
-    print("Discovery-Dienst läuft auf Port", PORT)
+    print("Discovery-Dienst läuft auf Port", 4000)
 
     try:
         # Endlosschleife zur Verarbeitung eingehender Nachrichten
         while True:
             try:
                 # Empfang der Daten vom Netzwerk
-                daten, addresse = sock.recvfrom(MaxBytes)
+                daten, addresse = sock.recvfrom(1024)# 1024 Bytes Puffergröße
                 nachricht = daten.decode("utf-8").strip()  # Umwandlung von Bytes zu String
 
                 # Verarbeitung der JOIN-Nachricht: Teilnehmer beitreten lassen
@@ -54,7 +52,7 @@ def discovery_loop(whoisport: int, ui_to_net: Queue):
 
                 # Verarbeitung der WHO-Nachricht: Teilnehmerliste zurücksenden
                 elif nachricht == "WHO":
-                    antwort = "KNOWUSERS " + ", ".join(
+                    antwort = "KNOWNUSERS " + ", ".join(
                         f"{handle} {ip} {port}"
                         for handle, (ip, port) in teilnehmer.items()
                     )
