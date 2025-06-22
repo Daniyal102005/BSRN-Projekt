@@ -1,0 +1,116 @@
+\doxysection{chat\+\_\+ui.\+Chat\+Client\+UI Class Reference}
+\hypertarget{classchat__ui_1_1_chat_client_u_i}{}\label{classchat__ui_1_1_chat_client_u_i}\index{chat\_ui.ChatClientUI@{chat\_ui.ChatClientUI}}
+
+
+Diese Klasse stellt die textbasierte Benutzeroberfläche und Netzwerklogik bereit.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classchat__ui_1_1_chat_client_u_i_a3282e47fc9597d2f12d61bcb8ea7d527}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, config\+\_\+path="{}config.\+toml"{})
+\begin{DoxyCompactList}\small\item\em Initialisiert das UI und lädt Konfiguration. \end{DoxyCompactList}\item 
+\Hypertarget{classchat__ui_1_1_chat_client_u_i_aebb8587184888cba8b251d641aa7ff5c}\label{classchat__ui_1_1_chat_client_u_i_aebb8587184888cba8b251d641aa7ff5c} 
+{\bfseries load\+\_\+config} (self)
+\item 
+\Hypertarget{classchat__ui_1_1_chat_client_u_i_a33eeacb899a84f83d1bcb0dd390164c9}\label{classchat__ui_1_1_chat_client_u_i_a33eeacb899a84f83d1bcb0dd390164c9} 
+{\bfseries save\+\_\+config} (self, config)
+\item 
+\Hypertarget{classchat__ui_1_1_chat_client_u_i_a37c84f4e886b3649d4e262e990e74417}\label{classchat__ui_1_1_chat_client_u_i_a37c84f4e886b3649d4e262e990e74417} 
+{\bfseries change\+\_\+config} (self)
+\begin{DoxyCompactList}\small\item\em Ändert die Konfiguration über Benutzereingabe (außer whoisport). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classchat__ui_1_1_chat_client_u_i_a491e4f12a53c723f45d6d976787ea040}{run}} (self, Queue ui\+\_\+to\+\_\+net, Queue net\+\_\+to\+\_\+ui)
+\begin{DoxyCompactList}\small\item\em Startet das textbasierte UI\+: verarbeitet alle Eingaben und zeigt Netzwerknachrichten an. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classchat__ui_1_1_chat_client_u_i_a97ee1b186325cf76693d759238f82718}\label{classchat__ui_1_1_chat_client_u_i_a97ee1b186325cf76693d759238f82718} 
+{\bfseries CONFIG\+\_\+\+FILE} = config\+\_\+path
+\item 
+dict \mbox{\hyperlink{classchat__ui_1_1_chat_client_u_i_a8d5e928ad89a69841c29a6faa9a689fe}{DEFAULT\+\_\+\+CONFIG}}
+\item 
+\Hypertarget{classchat__ui_1_1_chat_client_u_i_a2e4aff26c6e5058c1735ca6c03e0833d}\label{classchat__ui_1_1_chat_client_u_i_a2e4aff26c6e5058c1735ca6c03e0833d} 
+{\bfseries config} = dict(self.\+DEFAULT\+\_\+\+CONFIG)
+\item 
+\Hypertarget{classchat__ui_1_1_chat_client_u_i_a76efb52c65ae1796afd3e125883a7aad}\label{classchat__ui_1_1_chat_client_u_i_a76efb52c65ae1796afd3e125883a7aad} 
+dict {\bfseries peers} = \{\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Diese Klasse stellt die textbasierte Benutzeroberfläche und Netzwerklogik bereit. 
+
+Sie verarbeitet Eingaben, lädt und speichert Konfigurationen, und kommuniziert mit dem Netzwerkprozess über Queues. 
+
+\label{doc-constructors}
+\Hypertarget{classchat__ui_1_1_chat_client_u_i_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classchat__ui_1_1_chat_client_u_i_a3282e47fc9597d2f12d61bcb8ea7d527}\index{chat\_ui.ChatClientUI@{chat\_ui.ChatClientUI}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!chat\_ui.ChatClientUI@{chat\_ui.ChatClientUI}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily \label{classchat__ui_1_1_chat_client_u_i_a3282e47fc9597d2f12d61bcb8ea7d527} 
+chat\+\_\+ui.\+Chat\+Client\+UI.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{config\+\_\+path}{ = {\ttfamily "{}config.toml"{}}}\end{DoxyParamCaption})}
+
+
+
+Initialisiert das UI und lädt Konfiguration. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em config\+\_\+path} & Pfad zur TOML-\/\+Konfigurationsdatei. \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-func-members}
+\Hypertarget{classchat__ui_1_1_chat_client_u_i_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classchat__ui_1_1_chat_client_u_i_a491e4f12a53c723f45d6d976787ea040}\index{chat\_ui.ChatClientUI@{chat\_ui.ChatClientUI}!run@{run}}
+\index{run@{run}!chat\_ui.ChatClientUI@{chat\_ui.ChatClientUI}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily \label{classchat__ui_1_1_chat_client_u_i_a491e4f12a53c723f45d6d976787ea040} 
+chat\+\_\+ui.\+Chat\+Client\+UI.\+run (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{Queue}]{ui\+\_\+to\+\_\+net}{, }\item[{Queue}]{net\+\_\+to\+\_\+ui}{}\end{DoxyParamCaption})}
+
+
+
+Startet das textbasierte UI\+: verarbeitet alle Eingaben und zeigt Netzwerknachrichten an. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ui\+\_\+to\+\_\+net} & Queue zum Senden von Nachrichten. \\
+\hline
+{\em net\+\_\+to\+\_\+ui} & Queue zum Empfangen von Netzwerkereignissen.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyVerb}Startet die Chat-Schleife:
+ - Anzeige eingehender Nachrichten und Discovery-Events aus net_to_ui
+ - Befehle: /help, /who, /msg <Handle> <Text>, /img <Handle> <Bildpfad>, /config, /quit
+ - Nachrichten ohne '/' werden als Broadcast via ui_to_net gesendet
+\end{DoxyVerb}
+ 
+
+\label{doc-variable-members}
+\Hypertarget{classchat__ui_1_1_chat_client_u_i_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classchat__ui_1_1_chat_client_u_i_a8d5e928ad89a69841c29a6faa9a689fe}\index{chat\_ui.ChatClientUI@{chat\_ui.ChatClientUI}!DEFAULT\_CONFIG@{DEFAULT\_CONFIG}}
+\index{DEFAULT\_CONFIG@{DEFAULT\_CONFIG}!chat\_ui.ChatClientUI@{chat\_ui.ChatClientUI}}
+\doxysubsubsection{\texorpdfstring{DEFAULT\_CONFIG}{DEFAULT\_CONFIG}}
+{\footnotesize\ttfamily \label{classchat__ui_1_1_chat_client_u_i_a8d5e928ad89a69841c29a6faa9a689fe} 
+chat\+\_\+ui.\+Chat\+Client\+UI.\+DEFAULT\+\_\+\+CONFIG}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}handle"{}}:\ \textcolor{keywordtype}{None},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}port"{}}:\ 5000,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}whoisport"{}}:\ 4000,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}autoreply"{}}:\ \textcolor{stringliteral}{"{}Ich\ bin\ gerade\ nicht\ da."{}},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}imagepath"{}}:\ \textcolor{stringliteral}{"{}./images"{}}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+chat\+\_\+ui.\+py\end{DoxyCompactItemize}
