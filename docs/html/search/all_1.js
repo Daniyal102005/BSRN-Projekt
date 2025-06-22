@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['add_5fsystem_5fmessage_0',['add_system_message',['../classchat__gui_1_1_chat_u_i_visualizer.html#aa49bc9cc57e4418f9efd6b3e13bb0402',1,'chat_gui::ChatUIVisualizer']]]
+  ['change_5fconfig_0',['change_config',['../classchat__ui_1_1_chat_client_u_i.html#a37c84f4e886b3649d4e262e990e74417',1,'chat_ui::ChatClientUI']]],
+  ['chat_5fui_1',['chat_ui',['../namespacechat__ui.html',1,'']]],
+  ['chatclientui_2',['ChatClientUI',['../classchat__ui_1_1_chat_client_u_i.html',1,'chat_ui']]]
 ];
