@@ -91,18 +91,23 @@ $(function(){initNavTree('classchat__ui_1_1_chat_client_u_i.html','','classchat_
   <div class="headertitle"><div class="title">chat_ui.ChatClientUI Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Diese Klasse stellt die textbasierte Benutzeroberfläche und Netzwerklogik bereit.  
+ <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3282e47fc9597d2f12d61bcb8ea7d527" id="r_a3282e47fc9597d2f12d61bcb8ea7d527"><td class="memItemLeft" align="right" valign="top"><a id="a3282e47fc9597d2f12d61bcb8ea7d527" name="a3282e47fc9597d2f12d61bcb8ea7d527"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self, config_path=&quot;config.toml&quot;)</td></tr>
+<tr class="memitem:a3282e47fc9597d2f12d61bcb8ea7d527" id="r_a3282e47fc9597d2f12d61bcb8ea7d527"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3282e47fc9597d2f12d61bcb8ea7d527">__init__</a> (self, config_path=&quot;config.toml&quot;)</td></tr>
+<tr class="memdesc:a3282e47fc9597d2f12d61bcb8ea7d527"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialisiert das UI und lädt Konfiguration.  <br /></td></tr>
 <tr class="memitem:aebb8587184888cba8b251d641aa7ff5c" id="r_aebb8587184888cba8b251d641aa7ff5c"><td class="memItemLeft" align="right" valign="top"><a id="aebb8587184888cba8b251d641aa7ff5c" name="aebb8587184888cba8b251d641aa7ff5c"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>load_config</b> (self)</td></tr>
 <tr class="memitem:a33eeacb899a84f83d1bcb0dd390164c9" id="r_a33eeacb899a84f83d1bcb0dd390164c9"><td class="memItemLeft" align="right" valign="top"><a id="a33eeacb899a84f83d1bcb0dd390164c9" name="a33eeacb899a84f83d1bcb0dd390164c9"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>save_config</b> (self, config)</td></tr>
 <tr class="memitem:a37c84f4e886b3649d4e262e990e74417" id="r_a37c84f4e886b3649d4e262e990e74417"><td class="memItemLeft" align="right" valign="top"><a id="a37c84f4e886b3649d4e262e990e74417" name="a37c84f4e886b3649d4e262e990e74417"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>change_config</b> (self)</td></tr>
+<tr class="memdesc:a37c84f4e886b3649d4e262e990e74417"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ändert die Konfiguration über Benutzereingabe (außer whoisport). <br /></td></tr>
 <tr class="memitem:a491e4f12a53c723f45d6d976787ea040" id="r_a491e4f12a53c723f45d6d976787ea040"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a491e4f12a53c723f45d6d976787ea040">run</a> (self, Queue ui_to_net, Queue net_to_ui)</td></tr>
+<tr class="memdesc:a491e4f12a53c723f45d6d976787ea040"><td class="mdescLeft">&#160;</td><td class="mdescRight">Startet das textbasierte UI: verarbeitet alle Eingaben und zeigt Netzwerknachrichten an.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -110,10 +115,43 @@ Public Attributes</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>CONFIG_FILE</b> = config_path</td></tr>
 <tr class="memitem:a8d5e928ad89a69841c29a6faa9a689fe" id="r_a8d5e928ad89a69841c29a6faa9a689fe"><td class="memItemLeft" align="right" valign="top">dict&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d5e928ad89a69841c29a6faa9a689fe">DEFAULT_CONFIG</a></td></tr>
 <tr class="memitem:a2e4aff26c6e5058c1735ca6c03e0833d" id="r_a2e4aff26c6e5058c1735ca6c03e0833d"><td class="memItemLeft" align="right" valign="top"><a id="a2e4aff26c6e5058c1735ca6c03e0833d" name="a2e4aff26c6e5058c1735ca6c03e0833d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>config</b> = self.load_config()</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>config</b> = dict(self.DEFAULT_CONFIG)</td></tr>
 <tr class="memitem:a76efb52c65ae1796afd3e125883a7aad" id="r_a76efb52c65ae1796afd3e125883a7aad"><td class="memItemLeft" align="right" valign="top"><a id="a76efb52c65ae1796afd3e125883a7aad" name="a76efb52c65ae1796afd3e125883a7aad"></a>
 dict&#160;</td><td class="memItemRight" valign="bottom"><b>peers</b> = {}</td></tr>
 </table>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Diese Klasse stellt die textbasierte Benutzeroberfläche und Netzwerklogik bereit. </p>
+<p>Sie verarbeitet Eingaben, lädt und speichert Konfigurationen, und kommuniziert mit dem Netzwerkprozess über Queues. </p>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a3282e47fc9597d2f12d61bcb8ea7d527" name="a3282e47fc9597d2f12d61bcb8ea7d527"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3282e47fc9597d2f12d61bcb8ea7d527">&#9670;&#160;</a></span>__init__()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">chat_ui.ChatClientUI.__init__ </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>config_path</em></span><span class="paramdefsep"> = </span><span class="paramdefval">&quot;config.toml&quot;</span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialisiert das UI und lädt Konfiguration. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">config_path</td><td>Pfad zur TOML-Konfigurationsdatei. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="a491e4f12a53c723f45d6d976787ea040" name="a491e4f12a53c723f45d6d976787ea040"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a491e4f12a53c723f45d6d976787ea040">&#9670;&#160;</a></span>run()</h2>
@@ -138,9 +176,18 @@ dict&#160;</td><td class="memItemRight" valign="bottom"><b>peers</b> = {}</td></
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Startet das textbasierte UI: verarbeitet alle Eingaben und zeigt Netzwerknachrichten an. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ui_to_net</td><td>Queue zum Senden von Nachrichten. </td></tr>
+    <tr><td class="paramname">net_to_ui</td><td>Queue zum Empfangen von Netzwerkereignissen.</td></tr>
+  </table>
+  </dd>
+</dl>
 <pre class="fragment">Startet die Chat-Schleife:
  - Anzeige eingehender Nachrichten und Discovery-Events aus net_to_ui
- - Befehle: /help, /who, /msg &lt;Handle&gt; &lt;Text&gt;, /config, /quit
+ - Befehle: /help, /who, /msg &lt;Handle&gt; &lt;Text&gt;, /img &lt;Handle&gt; &lt;Bildpfad&gt;, /config, /quit
  - Nachrichten ohne '/' werden als Broadcast via ui_to_net gesendet
 </pre> 
 </div>
@@ -158,7 +205,7 @@ dict&#160;</td><td class="memItemRight" valign="bottom"><b>peers</b> = {}</td></
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=  {</div>
-<div class="line">            <span class="stringliteral">&quot;handle&quot;</span>: <span class="stringliteral">&quot;User&quot;</span>,</div>
+<div class="line">            <span class="stringliteral">&quot;handle&quot;</span>: <span class="keywordtype">None</span>,</div>
 <div class="line">            <span class="stringliteral">&quot;port&quot;</span>: 5000,</div>
 <div class="line">            <span class="stringliteral">&quot;whoisport&quot;</span>: 4000,</div>
 <div class="line">            <span class="stringliteral">&quot;autoreply&quot;</span>: <span class="stringliteral">&quot;Ich bin gerade nicht da.&quot;</span>,</div>
@@ -183,7 +230,7 @@ dict&#160;</td><td class="memItemRight" valign="bottom"><b>peers</b> = {}</td></
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>chat_ui</b></li><li class="navelem"><a href="classchat__ui_1_1_chat_client_u_i.html">ChatClientUI</a></li>
+    <li class="navelem"><a href="namespacechat__ui.html">chat_ui</a></li><li class="navelem"><a href="classchat__ui_1_1_chat_client_u_i.html">ChatClientUI</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.14.0 </li>
   </ul>
 </div>

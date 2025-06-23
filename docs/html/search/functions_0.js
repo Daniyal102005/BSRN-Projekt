@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['_5f_5finit_5f_5f_0',['__init__',['../classchat__gui_1_1_chat_u_i_visualizer.html#a8c693ebebe3c4e93261165c29a30f74d',1,'chat_gui::ChatUIVisualizer']]]
+  ['_5f_5finit_5f_5f_0',['__init__',['../classchat__ui_1_1_chat_client_u_i.html#a3282e47fc9597d2f12d61bcb8ea7d527',1,'chat_ui::ChatClientUI']]]
 ];
